@@ -16,5 +16,14 @@ services:
       - db
 
   db:
-    image: mongo:latest
+    image: localstack/localstack
+    container_name: aws
     network_mode: bridge
+    ports:
+      - "4567-4583:4567-4583"
+      - "4560:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - SERVICES=dynamodb
+      - DOCKER_HOST=unix:///var/run/docker.sock
