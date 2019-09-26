@@ -1,4 +1,4 @@
-name: Python application
+name: Robot Navigation Applocation
 
 on: [push]
 
@@ -8,40 +8,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install virtualenv
-        virtualenv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
-    - name: Lint with flake8
-      run: |
-        pip install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 app --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 app --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pip install pytest
-        pytest
-    - name: Decrypt large secret
-      run: ./.github/scripts/decrypt_secret.sh
-      env:
-        KEY: ${{ secrets.KEY }}
-          # This command is just an example to show your secret being printed
-          # Ensure you remove any print statements of your secrets. GitHub does
-          # not hide secrets that use this workaround.
-#      - name: Test printing your secret (Remove this step in production)
-#        run: cat $HOME/.aws/credentials
-    - name: Deploy to AWS
-      run: |
-        source venv/bin/activate
-        zappa update
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install virtualenv
+          virtualenv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 app --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 app --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
+        run: |
+          source venv/bin/activate
+          pip install pytest
+          pytest -vvvs
+      - name: Decrypt large secret
+        run: ./.github/scripts/decrypt_secret.sh
+        env:
+          KEY: ${{ secrets.KEY }}
+      - name: Deploy to AWS
+        run: |
+          source venv/bin/activate
+          zappa update
+#    TODO deployment into dev account, run CIT if succeed deploy to prod account
 

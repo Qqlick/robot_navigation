@@ -2,10 +2,9 @@ from flask import Flask
 
 app = Flask(__name__)
 
-
-@app.route('/')
-def hello_world():
-    return 'Updated world!'
+@app.route('/ping')
+def test_route():
+    return 'pong'
 
 
 if __name__ == '__main__':
