@@ -4,7 +4,7 @@ import boto3
 from flask import Flask, jsonify
 
 app = Flask(__name__)
-app.config['LOCAL'] = os.environ["FLASK_LOCAL"]
+app.config['LOCAL'] = os.environ.get("FLASK_LOCAL")
 
 TABLE_NAME = 'robot_nav'
 
