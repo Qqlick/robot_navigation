@@ -39,6 +39,37 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "test_dynamo_connection",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "dd7be4d4-d00a-422e-8658-0457ac1566ea",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/dynamo",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "dynamo"
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "protocolProfileBehavior": {}
