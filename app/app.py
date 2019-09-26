@@ -1,19 +1,12 @@
+import os
+
 import boto3
-from flask import Flask, json
+from flask import Flask, jsonify
 
 app = Flask(__name__)
+app.config['LOCAL'] = os.environ["FLASK_LOCAL"]
 
 TABLE_NAME = 'robot_nav'
-
-
-def respond(err, res=None):
-    return {
-        'statusCode': '400' if err else '200',
-        'body': err.message if err else json.dumps(res),
-        'headers': {
-            'Content-Type': 'application/json',
-        },
-    }
 
 
 @app.route('/ping')
@@ -23,9 +16,16 @@ def test_route():
 
 @app.route('/dynamo')
 def dynamo_test_route():
-    dynamo = boto3.client('dynamodb')
+    parameters = {
+        'aws_access_key_id': "dev",
+        'aws_secret_access_key': "dev",
+        'region_name': "local",
+        'endpoint_url': "http://localhost:4569",
+    }
+    parameters = parameters if app.config['LOCAL'] else {}
+    dynamo = boto3.client('dynamodb', **parameters)
     payload = {"TableName": TABLE_NAME}
-    return respond(dynamo.scan(payload))
+    return jsonify(dynamo.scan(**payload))
 
 
 if __name__ == '__main__':
