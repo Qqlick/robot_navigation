@@ -1,6 +1,6 @@
 {
   "dev": {
-    "app_function": "app.app",
+    "app_function": "app.app.app",
     "profile_name": "solano",
     "aws_region": "us-east-2",
     "project_name": "robot-navigatio",
