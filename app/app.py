@@ -1,8 +1,9 @@
 import os
 
 import boto3
+import flasgger
 from flasgger import Swagger
-from flask import Flask, jsonify, redirect, request
+from flask import Flask, jsonify, redirect, request, url_for
 
 from app.blueprints import path, location
 
@@ -39,7 +40,7 @@ def test_route():
 
 @app.route('/')
 def main_route():
-    return redirect('/apidocs', 302)
+    return redirect(url_for('flasgger.apidocs'), 302)
 
 
 @app.route('/dynamo')
