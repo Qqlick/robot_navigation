@@ -17,8 +17,9 @@ def save_location_to_db():
 @location.route('/<location_name>')
 def get_location(location_name):
     loc = Location(name=location_name).get()
-
-    return json.dumps(loc, cls=DecimalEncoder)
+    status = loc['ResponseMetadata']['HTTPStatusCode']
+    item = loc.get('Item')
+    return json.dumps(item, cls=DecimalEncoder), status if item else 404
 
 
 @location.route('/batch_save', methods=["POST"])
