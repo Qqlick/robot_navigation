@@ -72,6 +72,21 @@ class Location(Models):
             'y': self.y
         }
 
-    @classmethod
-    def get_pk(cls):
-        return cls.db_table_name
+    # @classmethod
+    # def get_pk(cls):
+    #     return cls.db_table_name
+
+
+class Path(Models):
+    db_table_name = 'paths'
+    pk = 'path_dest'
+
+    def __init__(self, path_dest=None, path=None):
+        self.path_dest = path_dest
+        self.path = path
+
+    def to_json(self):
+        return {
+            'path_dest': self.path_dest,
+            'path': self.path
+        }
