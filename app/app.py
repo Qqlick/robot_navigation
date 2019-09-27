@@ -16,7 +16,6 @@ swagger = Swagger(app, template_file="swagger.yml")
 TABLE_NAME = 'robot_nav'
 
 
-
 @app.route('/ping')
 def test_route():
     return 'pong', 200

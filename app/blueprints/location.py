@@ -12,7 +12,9 @@ location = Blueprint('location', __name__, url_prefix='/location')
 
 @location.route('', methods=["POST"])
 def save_location_to_db():
-    validate(request.json, 'location', os.path.join(app.root_path, 'swagger.yml'),
+    validate(request.json,
+             'location',
+             os.path.join(app.root_path, 'swagger.yml'),
              validation_error_handler=validation_error_inform_error)
     save_result = Location(**request.json).save()
 
@@ -22,5 +24,4 @@ def save_location_to_db():
 @location.route('/<location_name>')
 def get_location(location_name):
     loc = Location(name=location_name).get()
-    if loc
     return json.dumps(loc, cls=DecimalEncoder)

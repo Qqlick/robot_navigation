@@ -1,2 +1,2 @@
-from .path import path
-from .location import location
+from .path import path  # noqa: F401
+from .location import location  # noqa: F401
