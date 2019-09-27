@@ -14,7 +14,7 @@ app.register_blueprint(location)
 
 swagger = Swagger(app, template_file="swagger.yml")
 
-TABLE_NAME = 'robot_nav'
+TABLE_NAME = 'paths'
 
 
 @app.after_request
