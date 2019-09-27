@@ -1,0 +1,65 @@
+---
+swagger: '2.0'
+info:
+  title: dbaas
+  version: Unknown
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /ping:
+    get:
+      operationId: getVersions
+      summary: List versions
+      description: |
+        Lists information about all Database Service API versions.
+      produces:
+        - html/text
+      responses:
+        200: Pong
+  /location:
+    post:
+      description: |
+        Save path to db
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/location'
+
+      responses:
+        200: Success
+  /location/{location_name}:
+    get:
+      parameters:
+        - name: location_name
+          in: path
+      responses:
+        200: Success
+  /dynamo:
+    get:
+      description: Get table content
+
+definitions:
+  location:
+    id: Location
+    type: object
+    required: [name, x, y]
+    properties:
+      name:
+        type: string
+      x:
+        type: number
+        minimum: 0
+      y:
+        type: number
+        minimum: 0
+
+
+
+
+
+
+
+

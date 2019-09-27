@@ -1,17 +1,30 @@
 import os
 
 import boto3
-from flask import Flask, jsonify
+from flasgger import Swagger
+from flask import Flask, jsonify, redirect
+
+from app.blueprints import path, location
 
 app = Flask(__name__)
 app.config['LOCAL'] = os.environ.get("FLASK_LOCAL")
+app.register_blueprint(path)
+app.register_blueprint(location)
+
+swagger = Swagger(app, template_file="swagger.yml")
 
 TABLE_NAME = 'robot_nav'
 
 
+
 @app.route('/ping')
 def test_route():
-    return 'pong'
+    return 'pong', 200
+
+
+@app.route('/')
+def main_route():
+    return redirect('/apidocs', 302)
 
 
 @app.route('/dynamo')
