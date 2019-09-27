@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, json
 
-from app.models import Path
+from app.models import Path, DecimalEncoder
 from app.validator import validate_data
 
 path = Blueprint('path', __name__, url_prefix='/path')
@@ -11,14 +11,13 @@ def save_location_to_db():
     validate_data(request.json, 'path')
     save_result = Path(**request.json).save()
     return jsonify(save_result)
-#
-#
-# @location.route('/<location_name>')
-# def get_location(location_name):
-#     loc = Location(name=location_name).get()
-#
-#     return json.dumps(loc, cls=DecimalEncoder)
-#
+
+
+@path.route('/<path_dest>')
+def get_location(path_dest):
+    loc = Path(path_dest=path_dest).get()
+    return json.dumps(loc, cls=DecimalEncoder)
+
 #
 # @location.route('/batch_save', methods=["POST"])
 # def batch_save_locations():

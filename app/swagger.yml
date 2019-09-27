@@ -88,10 +88,47 @@ paths:
         200:
           description: Successful operation
 
+  /path/{path_dest}:
+    get:
+      description: Get path by path_dest param from db
+      parameters:
+        - name: path_dest
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful operation
+
 definitions:
   path:
     type: object
     required: [path_dest, path]
+    example: {
+      "path": [
+      {
+        "azimuth": 5,
+        "dist": 17
+      },
+      {
+        "azimuth": 45,
+        "dist": 56
+      },
+      {
+        "azimuth": 180,
+        "dist": 4
+      },
+      {
+        "azimuth": 23,
+        "dist": 5
+      },
+      {
+        "azimuth": 12,
+        "dist": 7
+      }
+      ],
+      "path_dest": "0:0=>Camellia Road"
+    }
     properties:
       path_dest:
         type: string
@@ -113,12 +150,6 @@ definitions:
               description: Distance
               example: 56
               minimum: 0
-
-
-
-
-
-
 
   locations:
     type: array

@@ -82,6 +82,11 @@ class Path(Models):
     pk = 'path_dest'
 
     def __init__(self, path_dest=None, path=None):
+        """
+        :param path_dest: Destination parameter for address. Format "0:0=>Camellia Road"
+        :param path: List of steps to reach destination from starting point [{"azimuth": 134, "dist": 50},
+                                                                            {"azimuth": 5, "dist": 14}]
+        """
         self.path_dest = path_dest
         self.path = path
 
