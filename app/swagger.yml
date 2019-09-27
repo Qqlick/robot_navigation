@@ -3,7 +3,7 @@ swagger: '2.0'
 info:
   title: Robot navigation API
   version: 0.0.1
-#basePath: /dev
+basePath: /dev
 consumes:
   - application/json
 produces:
