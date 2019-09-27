@@ -32,20 +32,27 @@ class Models:
         dynamo_resource = boto3.resource('dynamodb', **parameters)
         return dynamo_resource
 
-    @property
-    def table(self):
+    @classmethod
+    def table(cls):
         db = Models.db()
-        return db.Table(self.db_table_name)
+        return db.Table(cls.db_table_name)
+
+    @classmethod
+    def batch_save(cls, data):
+        table = cls.table()
+        with table.batch_writer() as tbl:
+            for r in data:
+                tbl.put_item(r)
 
     def to_json(self):
         pass
 
     def get(self):
-        r = self.table.get_item(Key={self.pk: getattr(self, self.pk)})
+        r = self.table().get_item(Key={self.pk: getattr(self, self.pk)})
         return r
 
     def save(self):
-        res = self.table.put_item(Item=self.to_json())
+        res = self.table().put_item(Item=self.to_json())
         return res
 
 
@@ -54,11 +61,6 @@ class Location(Models):
     pk = 'name'
 
     def __init__(self, name=None, x=None, y=None):
-        """
-        :param name:
-        :param x:
-        :param y:
-        """
         self.name = name
         self.x = x
         self.y = y

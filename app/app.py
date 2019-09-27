@@ -8,6 +8,7 @@ from app.blueprints import path, location
 
 app = Flask(__name__)
 app.config['LOCAL'] = os.environ.get("FLASK_LOCAL")
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.register_blueprint(path)
 app.register_blueprint(location)
 
