@@ -120,7 +120,6 @@ paths:
       description: Get path by path_dest param from db
       parameters:
         - name: path_dest
-          example: 0:0=>Camellia Road
           in: path
           required: true
           type: string
@@ -131,7 +130,7 @@ paths:
 definitions:
   path:
     type: object
-    required: [path_dest, path]
+    required: [path_dest, path, path_info]
     example: {
       "path": [
       {
@@ -147,12 +146,34 @@ definitions:
         "dist": 7
       }
       ],
-      "path_dest": "0:0=>Camellia Road"
+      "path_dest": "45:56=>76:90",
+      "path_info": {
+          "start": [45, 56],
+          "finish": [76, 90]
+      }
     }
     properties:
       path_dest:
         type: string
         example: 0:0=>Camellia Road
+      path_info:
+        type: object
+        required: [start, finish]
+        properties:
+          start:
+            type: array
+            minItems: 2
+            maxItems: 2
+            items:
+              type: number
+              minimum: 0
+          finish:
+            type: array
+            minItems: 2
+            maxItems: 2
+            items:
+              type: number
+              minimum: 0
       path:
         type: array
         minItems: 1
@@ -176,50 +197,14 @@ definitions:
     type: array
     minItems: 1
     items:
-      type: object
-      required: [path_dest, path]
-      properties:
-        path_dest:
-          type: string
-          example: 0:0=>Camellia Road
-        path:
-          type: array
-          minItems: 1
-          items:
-            type: object
-            required: [azimuth, dist]
-            properties:
-              azimuth:
-                type: number
-                description: Angle of rotation
-                minimum: 0
-                maximum: 360
-                example: 180
-              dist:
-                type: number
-                description: Distance
-                example: 56
-                minimum: 0
+      $ref: '#/definitions/path'
+
   locations:
     type: array
     example: [{"name": "test", "x": 12, "y": 34}, {"name": "fcsdasdasd", "x": 12, "y": 34}]
     minItems: 1
     items:
-      type: object
-      required: [name, x, y]
-      properties:
-        name:
-          type: string
-          example: test
-        x:
-          type: number
-          example: 56
-          minimum: 0
-        y:
-          type: number
-          example: 45.78
-          minimum: 0
-
+      $ref: '#/definitions/location'
 
   location:
     type: object
@@ -236,10 +221,3 @@ definitions:
         type: number
         example: 45.78
         minimum: 0
-
-
-
-
-
-
-

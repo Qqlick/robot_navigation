@@ -23,13 +23,13 @@ class Models:
     @staticmethod
     def db():
         parameters = {
-            'aws_access_key_id': "dev",
-            'aws_secret_access_key': "dev",
-            'region_name': "local",
-            'endpoint_url': "http://localhost:4569",
+            "aws_access_key_id": "dev",
+            "aws_secret_access_key": "dev",
+            "region_name": "local",
+            "endpoint_url": "http://localhost:4569",
         }
-        parameters = parameters if app.config['LOCAL'] else {}
-        dynamo_resource = boto3.resource('dynamodb', **parameters)
+        parameters = parameters if app.config["LOCAL"] else {}
+        dynamo_resource = boto3.resource("dynamodb", **parameters)
         return dynamo_resource
 
     @classmethod
@@ -57,8 +57,8 @@ class Models:
 
 
 class Location(Models):
-    db_table_name = 'locations'
-    pk = 'name'
+    db_table_name = "locations"
+    pk = "name"
 
     def __init__(self, name=None, x=None, y=None):
         self.name = name
@@ -66,32 +66,36 @@ class Location(Models):
         self.y = y
 
     def to_json(self):
-        return {
-            'name': self.name,
-            'x': self.x,
-            'y': self.y
-        }
-
-    # @classmethod
-    # def get_pk(cls):
-    #     return cls.db_table_name
+        return {"name": self.name, "x": self.x, "y": self.y}
 
 
 class Path(Models):
-    db_table_name = 'paths'
-    pk = 'path_dest'
+    db_table_name = "paths"
+    pk = "path_dest"
 
-    def __init__(self, path_dest=None, path=None):
+    def __init__(
+        self, path=None, start_x=None, start_y=None, finish_x=None, finish_y=None
+    ):
         """
-        :param path_dest: Destination parameter for address. Format "0:0=>Camellia Road"
-        :param path: List of steps to reach destination from starting point [{"azimuth": 134, "dist": 50},
-                                                                            {"azimuth": 5, "dist": 14}]
+        :param path: List of instructions
+        :param start_x:
+        :param start_y:
+        :param finish_x:
+        :param finish_y:
         """
-        self.path_dest = path_dest
+        self.start_x = start_x
+        self.start_y = start_y
+        self.finish_x = finish_x
+        self.finish_y = finish_y
         self.path = path
+        self.path_dest = f"{start_x}:{start_y}=>{finish_x}:{finish_y}"
 
     def to_json(self):
         return {
-            'path_dest': self.path_dest,
-            'path': self.path
+            "path_dest": self.path_dest,
+            "path_info": {
+                "start": [self.start_x, self.start_y],
+                "finish": [self.finish_x, self.finish_y],
+            },
+            "path": self.path,
         }

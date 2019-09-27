@@ -1,0 +1,56 @@
+[
+  {
+    "path": [
+      {
+        "azimuth": 5,
+        "dist": 17
+      },
+      {
+        "azimuth": 23,
+        "dist": 5
+      },
+      {
+        "azimuth": 12,
+        "dist": 7
+      }
+    ],
+    "path_dest": "45:56=>76:90",
+    "path_info": {
+      "finish": [
+        76,
+        90
+      ],
+      "start": [
+        45,
+        56
+      ]
+    }
+  },
+  {
+    "path": [
+      {
+        "azimuth": 5,
+        "dist": 17
+      },
+      {
+        "azimuth": 23,
+        "dist": 5
+      },
+      {
+        "azimuth": 12,
+        "dist": 7
+      }
+    ],
+    "path_dest": "0:0=>76:90",
+    "path_info": {
+      "finish": [
+        76,
+        90
+      ],
+      "start": [
+        0,
+        0
+      ]
+    }
+  }
+]
