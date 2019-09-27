@@ -1,9 +1,9 @@
 ---
 swagger: '2.0'
 info:
-  title: dbaas
-  version: Unknown
-basePath: /dev
+  title: Robot navigation API
+  version: 0.0.1
+#basePath: /dev
 consumes:
   - application/json
 produces:
@@ -11,10 +11,8 @@ produces:
 paths:
   /ping:
     get:
-      operationId: getVersions
-      summary: List versions
-      description: |
-        Lists information about all Database Service API versions.
+      summary: Test API point
+      description: Returns 'pong' at success
       produces:
         - html/text
       responses:
@@ -28,6 +26,15 @@ paths:
           in: body
           schema:
             $ref: '#/definitions/location'
+  /location/batch_save:
+    post:
+      description: |
+        Save path to db
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/locations'
 
       responses:
         200: Success
@@ -56,6 +63,13 @@ definitions:
       y:
         type: number
         minimum: 0
+  locations:
+    id: Locations
+    type: array
+    minItems: 1
+    items:
+      schema:
+        $ref: '#/definitions/location'
 
 
 

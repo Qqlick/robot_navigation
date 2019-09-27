@@ -1,5 +1,6 @@
 import os
 
+# from boto3.dynamodb import table
 from flasgger import validate
 from flask import Blueprint, jsonify, request, json
 from flask import current_app as app
@@ -24,4 +25,22 @@ def save_location_to_db():
 @location.route('/<location_name>')
 def get_location(location_name):
     loc = Location(name=location_name).get()
+
     return json.dumps(loc, cls=DecimalEncoder)
+
+
+@location.route('/batch_save', methods=["POST"])
+def batch_save_locations():
+    for item in request.json:
+        validate(item,
+                 'location',
+                 os.path.join(app.root_path, 'swagger.yml'),
+                 validation_error_handler=validation_error_inform_error)
+    table = Location().table
+    with table.batch_writer() as tbl:
+        for r in request.json:
+            tbl.put_item(r)
+
+    # loc = Location(name=location_name).get()
+
+    return jsonify("Success")
