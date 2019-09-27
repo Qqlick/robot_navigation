@@ -2,7 +2,7 @@ import os
 
 import boto3
 from flasgger import Swagger
-from flask import Flask, jsonify, redirect
+from flask import Flask, jsonify, redirect, request
 
 from app.blueprints import path, location
 
@@ -14,6 +14,22 @@ app.register_blueprint(location)
 swagger = Swagger(app, template_file="swagger.yml")
 
 TABLE_NAME = 'robot_nav'
+
+
+@app.after_request
+def after_request(response):
+    origin = request.environ.pop('HTTP_ORIGIN', '*')
+    response.headers.add('Access-Control-Allow-Origin', origin)
+    response.headers.add('X-Requested-With', '*')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    if request.method == 'OPTIONS':
+        response.headers['Access-Control-Allow-Methods'] = 'DELETE, GET, POST, PUT'
+        headers = request.headers.get('Access-Control-Request-Headers')
+        response.headers.add('Content-Type', 'application/json')
+        if headers:
+            response.headers['Access-Control-Allow-Headers'] = headers
+        return response
+    return response
 
 
 @app.route('/ping')
