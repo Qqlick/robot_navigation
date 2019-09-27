@@ -1,7 +1,6 @@
 import os
 
 import boto3
-import flasgger
 from flasgger import Swagger
 from flask import Flask, jsonify, redirect, request, url_for
 

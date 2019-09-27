@@ -3,6 +3,7 @@ swagger: '2.0'
 info:
   title: dbaas
   version: Unknown
+basePath: /dev
 consumes:
   - application/json
 produces:
