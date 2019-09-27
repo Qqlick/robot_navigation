@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, json
 
 from app.models import Path, DecimalEncoder
+from app.utils import allowed_file
 from app.validator import validate_data
 
 path = Blueprint('path', __name__, url_prefix='/path')
@@ -20,37 +21,35 @@ def get_path(path_dest):
     item = path.get('Item')
     return json.dumps(item, cls=DecimalEncoder), status if item else 404
 
-#
-# @location.route('/batch_save', methods=["POST"])
-# def batch_save_locations():
-#     validate_data(request.json, 'locations')
-#     Location.batch_save(request.json)
-#
-#     return jsonify("Success")
-#
-#
-# @location.route('/upload', methods=['POST'])
-# def upload_file():
-#     # check if the post request has the file part
-#     if 'file' not in request.files:
-#         resp = jsonify({'message': 'No file part in the request'})
-#         resp.status_code = 400
-#         return resp
-#     file = request.files['file']
-#     if file.filename == '':
-#         resp = jsonify({'message': 'No file selected for uploading'})
-#         resp.status_code = 400
-#         return resp
-#     if file and allowed_file(file.filename):
-#         locs_json = json.load(file)
-#         validate_data(locs_json, "locations")
-#         Location.batch_save(locs_json)
-#
-#         resp = jsonify({'message': 'File successfully uploaded'})
-#         resp.status_code = 201
-#         return resp
-#
-#     else:
-#         resp = jsonify({'message': 'Allowed file types are json, yml'})
-#         resp.status_code = 400
-#     return resp
+
+@path.route('/batch_save', methods=["POST"])
+def batch_save_paths():
+    validate_data(request.json, 'paths')
+    Path.batch_save(request.json)
+    return jsonify("Success")
+
+
+@path.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        resp = jsonify({'message': 'No file part in the request'})
+        resp.status_code = 400
+        return resp
+    file = request.files['file']
+    if file.filename == '':
+        resp = jsonify({'message': 'No file selected for uploading'})
+        resp.status_code = 400
+        return resp
+    if file and allowed_file(file.filename):
+        locs_json = json.load(file)
+        validate_data(locs_json, "paths")
+        Path.batch_save(locs_json)
+
+        resp = jsonify({'message': 'File successfully uploaded'})
+        resp.status_code = 201
+        return resp
+
+    else:
+        resp = jsonify({'message': 'Allowed file types are json, yml'})
+        resp.status_code = 400
+    return resp

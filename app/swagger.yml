@@ -40,10 +40,10 @@ paths:
           in: body
           schema:
             $ref: '#/definitions/locations'
-
       responses:
         200:
           description: Successful operation
+
   /location/{location_name}:
     get:
       parameters:
@@ -75,6 +75,33 @@ paths:
         200:
           description: Successful operation
 
+  /path/upload:
+    post:
+      summary: Uploads a json file.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: file
+          type: file
+          description: The file to upload.
+      responses:
+        200:
+          description: Successful operation
+
+  /path/batch_save:
+    post:
+      description: |
+        Save locations to db
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/paths'
+      responses:
+        200:
+          description: Successful operation
+
   /path:
     post:
       description: |
@@ -93,6 +120,7 @@ paths:
       description: Get path by path_dest param from db
       parameters:
         - name: path_dest
+          example: 0:0=>Camellia Road
           in: path
           required: true
           type: string
@@ -111,14 +139,6 @@ definitions:
         "dist": 17
       },
       {
-        "azimuth": 45,
-        "dist": 56
-      },
-      {
-        "azimuth": 180,
-        "dist": 4
-      },
-      {
         "azimuth": 23,
         "dist": 5
       },
@@ -132,6 +152,7 @@ definitions:
     properties:
       path_dest:
         type: string
+        example: 0:0=>Camellia Road
       path:
         type: array
         minItems: 1
@@ -151,6 +172,34 @@ definitions:
               example: 56
               minimum: 0
 
+  paths:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required: [path_dest, path]
+      properties:
+        path_dest:
+          type: string
+          example: 0:0=>Camellia Road
+        path:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [azimuth, dist]
+            properties:
+              azimuth:
+                type: number
+                description: Angle of rotation
+                minimum: 0
+                maximum: 360
+                example: 180
+              dist:
+                type: number
+                description: Distance
+                example: 56
+                minimum: 0
   locations:
     type: array
     example: [{"name": "test", "x": 12, "y": 34}, {"name": "fcsdasdasd", "x": 12, "y": 34}]
