@@ -1,6 +1,5 @@
 # Robot City Navigation System
 
-## Live API: <https://ys2l2msj0c.execute-api.us-east-2.amazonaws.com/dev>
 
 ## CICD is here: <https://github.com/Qqlick/robot_navigation/actions>
 
